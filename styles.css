@@ -1,27 +1,85 @@
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background-color: #f9f9f9;
-    padding: 20px;
-}
-#app {
-    max-width: 600px;
-    margin: auto;
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-button:hover {
-    background-color: #0056b3;
-}
+// JavaScript Code for Twitter-Themed Confession Page
+
+document.addEventListener("DOMContentLoaded", () => {
+    const app = document.getElementById("app");
+
+    // Function to create tweet-like elements
+    function createTweet(content, delay = 50) {
+        const tweet = document.createElement("div");
+        tweet.className = "tweet";
+        tweet.innerHTML = "<div class='avatar'></div><div class='content'></div>";
+
+        const contentDiv = tweet.querySelector(".content");
+        contentDiv.textContent = "";
+
+        app.appendChild(tweet);
+        typeWriter(content, contentDiv, delay);
+    }
+
+    // Function for typing effect
+    function typeWriter(text, element, delay = 50) {
+        let index = 0;
+        function type() {
+            if (index < text.length) {
+                element.textContent += text[index++];
+                setTimeout(type, delay);
+            }
+        }
+        type();
+    }
+
+    // Step 1: Landing Page
+    createTweet("so hi...? how you doin? i kinda have been mean to tell you something, will you hear it?");
+
+    const btn = document.createElement("button");
+    btn.textContent = "yes, tell me plz";
+    btn.className = "btn";
+    app.appendChild(btn);
+
+    btn.addEventListener("click", () => {
+        app.innerHTML = "";
+
+        // Step 2: Confession Tweets
+        const tweets = [
+            "im not great at saying these things face-to-face, so... i thought i'd try this instead.... i.... ive been thinking about you a lot lately",
+            "you know, i’ve been holding back these feelings for quite some time, and honestly, it’s been driving me crazy. every time i see you, talk to you, or even just think about you, there’s this little voice in my head telling me, “don’t let this slip away.” you’re so incredibly beautiful—not just in the way you look but in everything you do.",
+            "i love how your face lights up when you talk about the things that excite you. the way your passion comes through, how your words tumble out because you’re just that invested—it’s one of the most beautiful things i’ve ever witnessed. i can only imagine the sparkle in your eyes when you talk like that, even though i haven’t had the privilege of seeing it up close. but i just know it’s magical—like the kind of shine that could stop time, round and bright, drawing me in without even trying.",
+            "and then there’s your smile. your smile is like the first ray of sunlight after a long storm—warm, soft, and so comforting that it makes everything else fade into the background. it’s addictive, really.",
+            "you’re always in my mind. it’s like you’ve taken up permanent residence in my thoughts, my dreams, and my prayers. every time i open my eyes in the morning, you’re there. when i close them at night, you’re still there. i miss you constantly, even when you’re right in front of me, because somehow, it’s never enough.",
+            "so, would you let me? would you let me be the one who gets to call you mine?"
+        ];
+
+        tweets.forEach((tweet, index) => {
+            setTimeout(() => {
+                createTweet(tweet);
+                if (index === tweets.length - 1) {
+                    // Add decision buttons
+                    const yesBtn = document.createElement("button");
+                    yesBtn.textContent = "yes";
+                    yesBtn.className = "btn";
+
+                    const noBtn = document.createElement("button");
+                    noBtn.textContent = "no";
+                    noBtn.className = "btn";
+
+                    const btnContainer = document.createElement("div");
+                    btnContainer.className = "btn-container";
+
+                    btnContainer.appendChild(yesBtn);
+                    btnContainer.appendChild(noBtn);
+                    app.appendChild(btnContainer);
+
+                    yesBtn.addEventListener("click", () => {
+                        app.innerHTML = "";
+                        createTweet("you said yes...? omg, you’ve just made me the happiest person alive! thank you for trusting me. :)");
+                    });
+
+                    noBtn.addEventListener("click", () => {
+                        app.innerHTML = "";
+                        createTweet("i understand. thank you for listening to me, though. i really appreciate it. :)");
+                    });
+                }
+            }, index * 2000);
+        });
+    });
+});
